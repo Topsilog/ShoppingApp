@@ -8,6 +8,9 @@ import { RecipeService } from "../recipes/recipe.service";
 import { DataStorageService } from "../shared/data-storage.service";
 import { AuthService } from "../auth/auth.service";
 import { AuthGuardService } from "../auth/auth-guard.service";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { AuthInterceptor } from "../shared/auth.interceptor";
+import { LoggingInterceptor } from "../shared/logging.interceptor";
 
 @NgModule({
   declarations: [
@@ -22,6 +25,14 @@ import { AuthGuardService } from "../auth/auth-guard.service";
     AppRoutingModule, // a bit confusing why but the reason behind revolves around the routing issue
     HeaderComponent // export header selector
   ],
-  providers: [ShoppingListService, RecipeService, DataStorageService, AuthService, AuthGuardService]
+  providers: [
+    ShoppingListService, 
+    RecipeService, 
+    DataStorageService, 
+    AuthService, 
+    AuthGuardService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },  // putting INterceptors in use
+    { provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true } // importing logging interceptor
+  ]
 })
 export class CoreModule {}

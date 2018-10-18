@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser'; // declares all feature on CommonModule and all other additional modules, this should be only declare on app module
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,7 +15,7 @@ import { CoreModule } from './core/core.module';
   ],
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     AppRoutingModule,
     ShoppingListModule,
     AuthModule,
