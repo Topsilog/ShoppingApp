@@ -3,6 +3,8 @@ import { Ingredient } from '../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
 import { NgForm } from '@angular/forms';
 import { Subscription, iif } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as ShoppingListActions from '../store/shopping-list.actions'; // import the shopping list action
 
 @Component({
   selector: 'app-shopping-edit',
@@ -20,7 +22,9 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   editedItem: Ingredient;
   @ViewChild('shoppingAddForm') slForm: NgForm; //access form 
 
-  constructor(private slService: ShoppingListService) { }
+  constructor(private slService: ShoppingListService,
+    private store: Store<{shoppingList: {ingredients: Ingredient[]}}> // this will also work: Store<any>
+    ) { }
 
   ngOnInit() {
     this.subscription = this.slService.startedEditing.subscribe(
@@ -42,9 +46,11 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     const value = form.value;
     const newIngredient = new Ingredient(value.name, value.amount);
     if (this.editMode) {
-      this.slService.updateIngredient(this.editedItemIndex, newIngredient);
+      // this.slService.updateIngredient(this.editedItemIndex, newIngredient);
+      this.store.dispatch(new ShoppingListActions.UpdateIngredient({index: this.editedItemIndex, newIngredient: newIngredient}));
     } else {
-      this.slService.postIngredients(newIngredient);
+      // this.slService.postIngredients(newIngredient);
+      this.store.dispatch(new ShoppingListActions.AddIngredient(newIngredient)); // create new instance for Action Class imported/exported
     }
 
     // reset form
@@ -63,7 +69,8 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
 
   onDelete() {
+    this.store.dispatch(new ShoppingListActions.DeleteIngredient(this.editedItemIndex));
     this.onClear();
-    this.slService.deleteIngredient(this.editedItemIndex);
+    // this.slService.deleteIngredient(this.editedItemIndex);
   }
 }
