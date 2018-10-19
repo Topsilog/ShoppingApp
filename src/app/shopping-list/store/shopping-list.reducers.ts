@@ -2,11 +2,23 @@
 import { Ingredient } from '../../shared/ingredient.model';
 import * as ShoppingListActions from './shopping-list.actions';
 
-const initState = {
+export interface AppState {
+  shoppingList: StateInterface;
+}
+
+export interface StateInterface {
+  ingredients: Ingredient[];
+  editedIngredient: Ingredient;
+  editedIngredientIndex: number;
+}
+
+const initState: StateInterface = {
   ingredients: [
     new Ingredient('Cactus', 12),
     new Ingredient('Breads', 22)
-  ]
+  ],
+  editedIngredient: null,
+  editedIngredientIndex: -1
 }
 
 export function shoppingListReducer(state = initState, action: ShoppingListActions.ShoppingListActions) {
@@ -40,6 +52,13 @@ export function shoppingListReducer(state = initState, action: ShoppingListActio
          ...state,
          ingredients: oldIngredients
        };
+    case ShoppingListActions.START_EDIT:
+      const editedIngredient = {...state.ingredients[action.payload]};
+      return {
+        ...state,
+        editedIngredient: editedIngredient,
+        editedIngredientIndex: action.payload
+      }
     default:
       return state;
   }
