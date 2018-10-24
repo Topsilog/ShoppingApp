@@ -1,64 +1,69 @@
-// Reducer's role is to update the state, not actually update but creating a new state
 import { Ingredient } from '../../shared/ingredient.model';
 import * as ShoppingListActions from './shopping-list.actions';
 
-export interface AppState {
-  shoppingList: StateInterface;
-}
-
-export interface StateInterface {
+export interface State {
   ingredients: Ingredient[];
   editedIngredient: Ingredient;
   editedIngredientIndex: number;
 }
 
-const initState: StateInterface = {
+const initialState: State = {
   ingredients: [
-    new Ingredient('Cactus', 12),
-    new Ingredient('Breads', 22)
+    new Ingredient('Apples', 5),
+    new Ingredient('Tomatoes', 10),
   ],
   editedIngredient: null,
   editedIngredientIndex: -1
-}
+};
 
-export function shoppingListReducer(state = initState, action: ShoppingListActions.ShoppingListActions) {
+export function shoppingListReducer(state = initialState, action: ShoppingListActions.ShoppingListActions) {
   switch (action.type) {
     case ShoppingListActions.ADD_INGREDIENT:
       return {
         ...state,
         ingredients: [...state.ingredients, action.payload]
-      }
+      };
     case ShoppingListActions.ADD_INGREDIENTS:
       return {
         ...state,
         ingredients: [...state.ingredients, ...action.payload]
-      }
+      };
     case ShoppingListActions.UPDATE_INGREDIENT:
-      const ingredient = state.ingredients[action.payload.index];
-      const updateIngredient = {
+      const ingredient = state.ingredients[state.editedIngredientIndex];
+      const updatedIngredient = {
         ...ingredient,
-        ...action.payload.newIngredient
+        ...action.payload.ingredient
       };
       const ingredients = [...state.ingredients];
-      ingredients[action.payload.index] = updateIngredient;
+      ingredients[state.editedIngredientIndex] = updatedIngredient;
       return {
         ...state,
-        ingredients: ingredients
+        ingredients: ingredients,
+        editedIngredient: null,
+        editedIngredientIndex: -1
       };
     case ShoppingListActions.DELETE_INGREDIENT:
-       const oldIngredients = [...state.ingredients];
-       oldIngredients.splice(action.payload, 1);
-       return {
-         ...state,
-         ingredients: oldIngredients
-       };
+      const oldIngredients = [...state.ingredients];
+      oldIngredients.splice(state.editedIngredientIndex, 1);
+      return {
+        ...state,
+        ingredients: oldIngredients,
+        editedIngredient: null,
+        editedIngredientIndex: -1
+      };
     case ShoppingListActions.START_EDIT:
       const editedIngredient = {...state.ingredients[action.payload]};
       return {
         ...state,
         editedIngredient: editedIngredient,
         editedIngredientIndex: action.payload
-      }
+      };
+    case ShoppingListActions.STOP_EDIT:
+      return {
+        ...state,
+        editedIngredient: null,
+        editedIngredientIndex: -1
+      };
     default:
       return state;
   }

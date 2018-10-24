@@ -8,7 +8,8 @@
     <!-- <div class="collapse navbar-collapse"> -->
     <div class="navbar-default">
       <ul class="nav navbar-nav">
-        <ng-template [ngIf]="authService.isAuthenticated()">
+        <!-- <ng-template [ngIf]="authService.isAuthenticated()"> -->
+        <ng-template [ngIf]="(authState | async).authenticated">
             <li routerLinkActive="active"><a routerLink="/recipes">Recipes</a></li>
             <li routerLinkActive="active"><a routerLink="/shopping-list">Shopping List</a></li>
         </ng-template>        
@@ -16,12 +17,14 @@
         <li><a href="#" (click)="onSelect('shopping-list')">Shopping List</a></li> -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <ng-template [ngIf]="!authService.isAuthenticated()">
+        <!-- <ng-template [ngIf]="!authService.isAuthenticated()"> -->
+        <ng-template [ngIf]="!(authState | async).authenticated">
             <li><a routerLink="signup" role="button">Register</a></li>
             <li><a routerLink="signin" role="button">Sign In</a></li>
         </ng-template>
-        <li *ngIf="authService.isAuthenticated()"><a (click)="onLogout()">Logout</a></li>
-        <li class="dropdown" appDropdown *ngIf="authService.isAuthenticated()">
+        <li *ngIf="(authState | async).authenticated"><a (click)="onLogout()">Logout</a></li>
+        <!-- <li class="dropdown" appDropdown *ngIf="authService.isAuthenticated()"> -->
+        <li class="dropdown" appDropdown *ngIf="(authState | async).authenticated">
           <a class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a (click)="onSaveData()">Save Data</a></li>
