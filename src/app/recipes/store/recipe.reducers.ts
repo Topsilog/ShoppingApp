@@ -1,10 +1,10 @@
-import { Ingredient } from "src/app/shared/ingredient.model";
-import { Recipe } from "../recipe.model";
-import * as fromRecipeActions from "./recipe.actions";
+import { Recipe } from '../recipe.model';
+import { Ingredient } from '../../shared/ingredient.model';
+import * as RecipeActions from './recipe.actions';
 import * as fromApp from '../../store/app.reducers';
 
 export interface FeatureState extends fromApp.AppState {
-  recipes: State;
+  recipes: State
 }
 
 export interface State {
@@ -14,55 +14,55 @@ export interface State {
 const initialState: State = {
   recipes: [
     new Recipe(
-      'Chicken Adobo', 
-      'The famous Filipino cuisine known around the world', 
-      'https://tinyurl.com/y7ptxh2b', 
+      'Tasty Schnitzel',
+      'A super-tasty Schnitzel - just awesome!',
+      'https://upload.wikimedia.org/wikipedia/commons/7/72/Schnitzel.JPG',
       [
-        new Ingredient('Chicken', 21)
-      ]
-    ),
-    new Recipe(
-      'Talong Adobo', 
-      'Originated from the adobo style but with a different twist', 
-      'https://tinyurl.com/y7ptxh2b', 
+        new Ingredient('Meat', 1),
+        new Ingredient('French Fries', 20)
+      ]),
+    new Recipe('Big Fat Burger',
+      'What else you need to say?',
+      'https://upload.wikimedia.org/wikipedia/commons/b/be/Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg',
       [
-        new Ingredient('Eggplant', 12)
-      ]
-    )
+        new Ingredient('Buns', 2),
+        new Ingredient('Meat', 1)
+      ])
   ]
 };
 
-export function recipeReducer(state = initialState, action: fromRecipeActions.RecipeActions) {
-  switch(action.type) {
-    case (fromRecipeActions.SET_RECIPE):
+export function recipeReducer(state = initialState, action: RecipeActions.RecipeActions) {
+  switch (action.type) {
+    case (RecipeActions.SET_RECIPES):
       return {
         ...state,
         recipes: [...action.payload]
       };
-    case (fromRecipeActions.ADD_RECIPE):
+    case (RecipeActions.ADD_RECIPE):
       return {
         ...state,
         recipes: [...state.recipes, action.payload]
       };
-    case(fromRecipeActions.UPDATE_RECIPE):
+    case (RecipeActions.UPDATE_RECIPE):
       const recipe = state.recipes[action.payload.index];
       const updatedRecipe = {
         ...recipe,
-        ...action.payload.UpdateRecipe
+        ...action.payload.updatedRecipe
       };
       const recipes = [...state.recipes];
+      recipes[action.payload.index] = updatedRecipe;
       return {
         ...state,
         recipes: recipes
       };
-    case (fromRecipeActions.DELETE_RECIPE):
+    case (RecipeActions.DELETE_RECIPE):
       const oldRecipes = [...state.recipes];
       oldRecipes.splice(action.payload, 1);
       return {
         ...state,
         recipes: oldRecipes
       };
-    default: state;
+    default:
+      return state;
   }
-
 }

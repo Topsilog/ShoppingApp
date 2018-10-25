@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 // import { RecipeService } from '../recipe.service';
-// import { Recipe } from '../recipe.model';
+import { Recipe } from '../recipe.model';
 import * as fromAppRecipeReducer from '../store/recipe.reducers';
 
 @Component({
@@ -13,7 +13,8 @@ import * as fromAppRecipeReducer from '../store/recipe.reducers';
   styleUrls: ['./recipes-list.component.scss']
 })
 export class RecipesListComponent implements OnInit {
-  recipesState: Observable<fromAppRecipeReducer.State>;
+  // recipesState: Observable<fromAppRecipeReducer.State>;
+  recipesState: Observable<{recipes: Recipe[]}>;
   subscription: Subscription;
   
   constructor(

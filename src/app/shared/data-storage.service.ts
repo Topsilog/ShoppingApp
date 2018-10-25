@@ -47,45 +47,45 @@ export class DataStorageService {
     //     }
     //   ))
 
-    const req = new HttpRequest('PUT', 
-      'https://ng-shopping-app-8ecb0.firebaseio.com/recipes.json', 
-      this.recipeService.getRecipes(), 
-      {
-        reportProgress: true
-      });
+    // const req = new HttpRequest('PUT', 
+    //   'https://ng-shopping-app-8ecb0.firebaseio.com/recipes.json', 
+    //   this.recipeService.getRecipes(), 
+    // {
+    //   reportProgress: true
+    // });
 
-      return this.http.request(req);
+    // return this.http.request(req);
   }
 
   getRecipes() {
     // const token = this.authService.getToken(); //get token from auth service
-    const token = this.store.select('auth').pipe(
-      map((authState: fromAuth.State) => {
-        return authState.token;
-      })
-    );
+    // const token = this.store.select('auth').pipe(
+    //   map((authState: fromAuth.State) => {
+    //     return authState.token;
+    //   })
+    // );
 
-    // this.http.get<Recipe[]>('https://ng-shopping-app-8ecb0.firebaseio.com/recipes.json?auth=' + token, {
-    this.http.get<Recipe[]>('https://ng-shopping-app-8ecb0.firebaseio.com/recipes.json', {      
-      observe: 'body'
-    })
-      .pipe(map(
-        (recipes) => {
-          console.log('get new response ', recipes);
-          // for (let recipe of recipes) {
-          //   if (!recipe['ingredients']) {
-          //     recipe['ingredients'] = [];
-          //   }
-          // }
-          // console.log('recipes fetch success ', recipes);
-          // return recipes;
-          return [];
-        }
-      ))
-      .subscribe(
-        (recipes: Recipe[]) => {
-          this.recipeService.setRecipes(recipes);
-        }
-      );
+    // // this.http.get<Recipe[]>('https://ng-shopping-app-8ecb0.firebaseio.com/recipes.json?auth=' + token, {
+    // this.http.get<Recipe[]>('https://ng-shopping-app-8ecb0.firebaseio.com/recipes.json', {      
+    //   observe: 'body'
+    // })
+    // .pipe(map(
+    //   (recipes) => {
+    //     console.log('get new response ', recipes);
+    //     // for (let recipe of recipes) {
+    //     //   if (!recipe['ingredients']) {
+    //     //     recipe['ingredients'] = [];
+    //     //   }
+    //     // }
+    //     // console.log('recipes fetch success ', recipes);
+    //     // return recipes;
+    //     return [];
+    //   }
+    // ))
+    // .subscribe(
+    //   (recipes: Recipe[]) => {
+    //     this.recipeService.setRecipes(recipes);
+    //   }
+    // );
   }
 }

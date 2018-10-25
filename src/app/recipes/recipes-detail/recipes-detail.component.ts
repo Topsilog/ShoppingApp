@@ -4,11 +4,12 @@ import { RecipeService } from '../recipe.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import * as ShoppingListActions from '../../shopping-list/store/shopping-list.actions';
 // import * as fromShoppingList from '../../shopping-list/store/shopping-list.reducers'; // removed due to centrailize reducer declaration
 import * as fromAppRecipeReducer from '../store/recipe.reducers';
-import { take } from 'rxjs/operators';
+import * as fromRecipeActions from '../store/recipe.actions';
 
 @Component({
   selector: 'app-recipes-detail',
@@ -47,7 +48,8 @@ export class RecipesDetailComponent implements OnInit {
   }
 
   onDeleteRecipe() {
-    this.recipeService.deleteRecipe(this.id);
+    // this.recipeService.deleteRecipe(this.id);
+    this.store.dispatch(new fromRecipeActions.DeleteRecipe(this.id));
     this.router.navigate(['/recipes'], {relativeTo: this.route});
   }
 
