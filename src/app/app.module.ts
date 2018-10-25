@@ -3,6 +3,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +14,7 @@ import { AuthModule } from './auth/auth.module'
 import { CoreModule } from './core/core.module';
 import { reducers } from './store/app.reducers';
 import { AuthEffects } from './auth/store/auth.effects';
+import { environment } from 'src/environments/environment.prod';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,11 @@ import { AuthEffects } from './auth/store/auth.effects';
     AuthModule,
     CoreModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects])
+    EffectsModule.forRoot([AuthEffects]),
+    StoreRouterConnectingModule,
+    // this cannot be added before StoreModule | this module is not for production. return array.
+    // also check if the current build is not production build.
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   bootstrap: [AppComponent]
 })

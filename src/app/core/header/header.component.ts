@@ -5,9 +5,10 @@ import { Observable } from 'rxjs';
 
 import { DataStorageService } from '../../shared/data-storage.service';
 import { Response } from '@angular/http';
-import { AuthService } from '../../auth/auth.service';
+// import { AuthService } from '../../auth/auth.service';
 import * as fromApp from '../../store/app.reducers';
 import * as fromAuth from '../../auth/store/auth.reducers';
+import * as fromAuthActions from '../../auth/store/auth.actions';
 
 @Component ({
   selector: 'app-header',
@@ -18,7 +19,7 @@ export class HeaderComponent implements OnInit {
   @Output() featureSelected = new EventEmitter<string>();
 
   constructor(private dataStorageService: DataStorageService,
-    private authService: AuthService,
+    // private authService: AuthService,
     private store: Store<fromApp.AppState>) {}
 
   ngOnInit() {
@@ -47,7 +48,8 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout() {
-    this.authService.logout();
+    // this.authService.logout();
+    this.store.dispatch(new fromAuthActions.LogOut());
   }
 
 }
