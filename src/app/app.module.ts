@@ -14,14 +14,14 @@ import { AuthModule } from './auth/auth.module'
 import { CoreModule } from './core/core.module';
 import { reducers } from './store/app.reducers';
 import { AuthEffects } from './auth/store/auth.effects';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from '../../src/environments/environment.prod';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({appId: 'my-app'}),
     HttpClientModule,
     AppRoutingModule,
     SharedModule,

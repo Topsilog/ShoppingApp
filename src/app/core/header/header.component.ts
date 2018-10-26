@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { HttpEvent } from '@angular/common/http';
+// import { HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { DataStorageService } from '../../shared/data-storage.service';
